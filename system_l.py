@@ -1,5 +1,6 @@
 import turtle as lia
-import random      
+import random    
+
 def gen_cads(axiom, product_rules, n_items):
     new_axiom=axiom
     for i in range(n_items):
@@ -13,6 +14,7 @@ def gen_cads(axiom, product_rules, n_items):
                 list_axiom.append(aux)
         new_axiom=''.join(list_axiom)          
     return new_axiom
+
 
 def generate_AllTurtle(cad,theta,size,moves):
     lia.setup(width=1.0,height=1.0)
@@ -29,28 +31,16 @@ def generate_AllTurtle(cad,theta,size,moves):
             else:
                 moves[car](size)
     lia.update()
-    lia.done()         
-def generate_turtle(cad, theta, size):
-    lia.setup(width=1.0,height=1.0)
-    lia.tracer(0, 0)
-    lia.setpos(0,0)
-    lia.setheading(90)
-    new_cad=cad.replace('X','')
-    new_cad=new_cad.replace('Y','')
-    for i in new_cad:
-        if i == 'F':
-            lia.forward(size)
-        elif i == '-':
-            lia.left(theta)
-        elif i == '+':
-            lia.right(theta)
-    lia.update()
     lia.done()
-def generate_AllTurtle_WithMemory(cad,theta,size,moves):
+
+
+def generate_AllTurtle_WithMemory(cad, theta, size, moves, pos_in, line_color, arrow_color="black", bg_color="black"):
     lia.setup(width=1.0,height=1.0)
     lia.tracer(0, 0)
+    lia.color(line_color, arrow_color)
+    lia.bgcolor(bg_color)
     lia.penup()
-    lia.setpos(-400,-150)
+    lia.setpos(pos_in)
     lia.pendown()
     lia.setheading(theta)
     actual_dir=[]
@@ -74,6 +64,8 @@ def generate_AllTurtle_WithMemory(cad,theta,size,moves):
             lia.pendown()
     lia.update()
     lia.done()
+
+
 def gen_ej1():
     axiom='FX'
     prod_rules={'X' : ['X+YF'], 'Y' : ['FX-Y']}
@@ -81,10 +73,33 @@ def gen_ej1():
     size = 10
     ang = 90
     func_list={'F':lia.forward,'+':lia.right,'-':lia.left}
-    #print(func_list['F'].__name__)
-
     generate_AllTurtle(l, ang, size,func_list)
-def gen_ej2(axiom,prod_rules):
+
+
+def gen_ej2(sub_ej):
+    axioms_list=['F','F+F+F+F', 'F+F+F+F', 'F-F-F-F','F-G-G']
+    prod_list=[{'F':['F+F--F+F']},
+               {'F':['F+F+F-FFF-F']},
+               {'F':['FF+F+F+F+FF']},
+               {'F':['F-F+F+FF-F-F+F']},
+               {'F':['F-G+F+G-F'], 'G':['GG']}]
+    angle_list=[60,90,90,90,120]
+    functions_list=[{'F':lia.forward,'+':lia.right,'-':lia.left},
+                    {'F':lia.forward,'+':lia.right,'-':lia.left},
+                    {'F':lia.forward,'+':lia.right,'-':lia.left},
+                    {'F':lia.forward,'+':lia.right,'-':lia.left},
+                    {'F':lia.forward,'G':lia.forward,'+':lia.right,'-':lia.left}]
+    all_pos_in = [(-400, -350), (-300, -100), (-350, -300), (150, -150), (350, -280)]
+    all_size = [3.5, 0.36, 2.8, 0.4, 25]
+    all_line_color = ["royalblue", "green", "purple", "red", "white"]
+    if sub_ej<=0 and sub_ej>len(axioms_list):
+        print("Ingrese un ejercicio valido...")
+        return
+    l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
+    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], all_size[sub_ej-1], functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
+
+
+def gen_ej3(sub_ej):
     axioms_list=['F','F','F','G','F']
     prod_list=[{'F':['F[+F]F[-F[+F][-F]]F']},
                {'F':['F[+F[+F]-F][-F]F']},
@@ -97,33 +112,13 @@ def gen_ej2(axiom,prod_rules):
                     {'F':lia.forward,'+':lia.right,'-':lia.left},
                     {'F':lia.forward,'G':lia.forward,'+':lia.right,'-':lia.left},
                     {'F':lia.forward,'G':lia.forward,'+':lia.right,'-':lia.left}]
+    all_pos_in = [(-400, -350), (-600, -50), (-600, -100), (-390, -150), (-400, -280)]
+    all_size = [3, 20, 9, 8, 5.5]
+    all_line_color = ["royalblue", "green", "purple", "red", "white"]
     if sub_ej<=0 and sub_ej>len(axioms_list):
         print("Ingrese un ejercicio valido...")
         return
     l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
-    #print(l)
-    size = 10
-    #print(func_list['F'].__name__)
-    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], size,functions_list[sub_ej-1])
-def gen_ej3_p1(sub_ej):
-    axioms_list=['F','F','F','G','F']
-    prod_list=[{'F':['F[+F]F[-F[+F][-F]]F']},
-               {'F':['F[+F[+F]-F][-F]F']},
-               {'F':['FF+[+F-F-F]-[-F+F+F]']},
-               {'F':['FF'],'G':['FG[-F[G]-G][G+G][+F[G]+G]']},
-               {'F':['F[+F]F[-F]F','F[-F]F[+F]F','F[-FF-F]F']}]
-    angle_list=[29,21,22.5,22.5,29]
-    functions_list=[{'F':lia.forward,'+':lia.right,'-':lia.left},
-                    {'F':lia.forward,'+':lia.right,'-':lia.left},
-                    {'F':lia.forward,'+':lia.right,'-':lia.left},
-                    {'F':lia.forward,'G':lia.forward,'+':lia.right,'-':lia.left},
-                    {'F':lia.forward,'G':lia.forward,'+':lia.right,'-':lia.left}]
-    if sub_ej<=0 and sub_ej>len(axioms_list):
-        print("Ingrese un ejercicio valido...")
-        return
-    l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
-    #print(l)
-    size = 10
-    #print(func_list['F'].__name__)
-    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], size,functions_list[sub_ej-1])
-  
+    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], all_size[sub_ej-1],functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
+
+gen_ej3(5)
