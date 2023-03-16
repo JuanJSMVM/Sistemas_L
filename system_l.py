@@ -120,4 +120,56 @@ def gen_ej3(sub_ej):
         return
     l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
     generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1],angle_list[sub_ej-1], all_size[sub_ej-1],functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
-gen_ej3(5)
+def move_Turtle_WithMemory(screen,turtle,cad, init_theta,theta, size, moves, pos_in, line_color, arrow_color="black"):
+    turtle.color(line_color, arrow_color)
+    turtle.penup()
+    turtle.setpos(pos_in)
+    turtle.pendown()
+    turtle.setheading(init_theta)
+    actual_dir=[]
+    actual_heading=[]
+    for car in cad:
+        if car in moves.keys():
+            name_func=moves[car].__name__
+            if name_func in ['right','left']:
+                moves[car](theta)
+            else:
+                moves[car](size)
+        elif(car=='['):
+            actual_dir.append(turtle.pos())
+            actual_heading.append(turtle.heading())
+            turtle.penup()
+        elif(car==']'):
+            turtle.setpos(actual_dir[-1])
+            turtle.setheading(actual_heading[-1])
+            if len(actual_dir)>1:
+                turtle.pendown()
+            actual_dir.pop(-1)
+            actual_heading.pop(-1)
+
+def gen_forest():
+    axioms_list=['VZFFF','FGG','F','G','F']
+    prod_list=[{'V':['+++W[---W]YV'],'Z':['[-FFF][+FFF]F'],'W':['+X[-W]Z'],'Y':['YZ']},
+               {'F':['FF'],'G':['G[-F[G]-G][G+G][+F[G]-G]G[+F[G]+G]']}]
+    theta=[20,45]
+    init_theta=[90,90]
+    
+    pos_in = [(0,-100),(0, -300)]
+    size = [10,10]
+    all_line_color = ["yellow","green"]
+    
+    turtle=lia.Turtle()
+    screen=lia.Screen()
+    moves={'F':turtle.forward,'+':turtle.right,'-':turtle.left}
+    #log=gen_cads(axioms_list[0],prod_list[0], 10)
+    leaf1 = gen_cads(axioms_list[1],prod_list[1], 5)
+    screen.setup(width=1.0,height=1.0)
+    screen.bgcolor('black')
+    turtle._tracer(0, 0)
+    print(all_line_color[0])
+    #move_Turtle_WithMemory(screen,turtle,log,init_theta[0],theta[0],size[0],moves,pos_in[0],all_line_color[0])
+    move_Turtle_WithMemory(screen,turtle,leaf1,init_theta[1],theta[1],size[1],moves,pos_in[1],all_line_color[1])
+
+    turtle._update()
+    screen.mainloop()
+gen_forest()
