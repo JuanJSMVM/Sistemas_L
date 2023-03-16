@@ -3,7 +3,7 @@ import random
 
 def gen_cads(axiom, product_rules, n_items):
     new_axiom=axiom
-    for i in range(n_items):
+    for _ in range(n_items):
         list_axiom=[]
         for car in new_axiom:
             aux=car
@@ -14,7 +14,6 @@ def gen_cads(axiom, product_rules, n_items):
                 list_axiom.append(aux)
         new_axiom=''.join(list_axiom)          
     return new_axiom
-
 
 def generate_AllTurtle(cad,theta,size,moves):
     lia.setup(width=1.0,height=1.0)
@@ -33,8 +32,7 @@ def generate_AllTurtle(cad,theta,size,moves):
     lia.update()
     lia.done()
 
-
-def generate_AllTurtle_WithMemory(cad, theta, size, moves, pos_in, line_color, arrow_color="black", bg_color="black"):
+def generate_AllTurtle_WithMemory(cad, init_theta,theta, size, moves, pos_in, line_color, arrow_color="black", bg_color="black"):
     lia.setup(width=1.0,height=1.0)
     lia.tracer(0, 0)
     lia.color(line_color, arrow_color)
@@ -42,7 +40,7 @@ def generate_AllTurtle_WithMemory(cad, theta, size, moves, pos_in, line_color, a
     lia.penup()
     lia.setpos(pos_in)
     lia.pendown()
-    lia.setheading(theta)
+    lia.setheading(init_theta)
     actual_dir=[]
     actual_heading=[]
     for car in cad:
@@ -59,9 +57,11 @@ def generate_AllTurtle_WithMemory(cad, theta, size, moves, pos_in, line_color, a
         elif(car==']'):
             lia.setpos(actual_dir[-1])
             lia.setheading(actual_heading[-1])
+            if len(actual_dir)>1:
+                lia.pendown()
             actual_dir.pop(-1)
-            actual_heading.pop(-1)      
-            lia.pendown()
+            actual_heading.pop(-1)
+             
     lia.update()
     lia.done()
 
@@ -96,7 +96,7 @@ def gen_ej2(sub_ej):
         print("Ingrese un ejercicio valido...")
         return
     l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
-    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], all_size[sub_ej-1], functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
+    generate_AllTurtle_WithMemory(l,angle_list[sub_ej-1], angle_list[sub_ej-1], all_size[sub_ej-1], functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
 
 
 def gen_ej3(sub_ej):
@@ -119,6 +119,5 @@ def gen_ej3(sub_ej):
         print("Ingrese un ejercicio valido...")
         return
     l = gen_cads(axioms_list[sub_ej-1],prod_list[sub_ej-1], 5)
-    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1], all_size[sub_ej-1],functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
-
+    generate_AllTurtle_WithMemory(l, angle_list[sub_ej-1],angle_list[sub_ej-1], all_size[sub_ej-1],functions_list[sub_ej-1], all_pos_in[sub_ej-1], all_line_color[sub_ej-1])
 gen_ej3(5)
