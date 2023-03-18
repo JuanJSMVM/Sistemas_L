@@ -13,7 +13,7 @@ def gen_cads(axiom, product_rules, n_items):
             else:    
                 list_axiom.append(aux)
         new_axiom=''.join(list_axiom)          
-    return new_axiom
+    return list(new_axiom)
 
 def generate_AllTurtle(cad,theta,size,moves):
     lia.setup(width=1.0,height=1.0)
@@ -145,43 +145,43 @@ def move_Turtle_WithMemory(screen,turtle,cad, init_theta,theta, size, moves, pos
         elif(car==']'):
             turtle.setpos(actual_dir[-1])
             turtle.setheading(actual_heading[-1])
-            if len(actual_dir)>1:
-                turtle.pendown()
+            
+            turtle.pendown()
             actual_dir.pop(-1)
             actual_heading.pop(-1)
 
 def gen_forest():
-    axioms_list=['F','FGG','F','G','F']
-    prod_list=[{'F':['F[+FF][-FF]F[-F][+F]F']},
-               {'F':['FF'],'G':['G[-F[G]-G][G+G][+F[G]-G]G[+F[G]+G]']},
-               {'F':['FF+[+F-F-F]-[-F+F+F]']}]
-    theta=[35,45,22.5]
-    init_theta=[90,90, 90]
+    axioms_list=['F','XGG','F','G','F']
+    prod_list=[{'F':['[FD]H'],'H':['K[+FFFH[]]F'],'K':['[]FFK-H']
+                ,'D':['D-F+']},
+               {'F':['FF'],'G':['G[-F[G]-G][G+G][+FF[G]-G]',
+                                'G[+F[G]+G][G-G][-FF[G]-G]',
+                                'G[-F[G]+G][G-G][+FF[G]-G]',
+                                'F[-G[F]+F][F-F][+GG[F]-F]',
+                                'F[-G[F]-F][F+F][+GG[F]-F]']}]
     
-    pos_in = [(0,-200),(0,-400),(300,-400),(-500,-400),(500,-400),(-500,-400),(-600,-400),(600,-400)]
-    size = [2,10,7,4]
-    all_line_color = ["#f4511e","#f39c12","#d4e157"]
+    turtle=lia.Turtle()
+    screen=lia.Screen()
+    moves={'F':turtle.forward,'G':turtle.forward,'+':turtle.right,'-':turtle.left}
     
-    turtle = lia.Turtle()
-    screen = lia.Screen()
-    moves = {'F':turtle.forward,'G':turtle.forward,'+':turtle.right,'-':turtle.left, 'X':turtle.forward, 'Y':turtle.forward,}
-    log = gen_cads(axioms_list[0],prod_list[0], 5)
-    leaf1 = gen_cads(axioms_list[1],prod_list[1], 5)
-    tree = gen_cads(axioms_list[2],prod_list[2], 5)
+    leaf1 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
+    leaf2 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
+    leaf3 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
+    leaf4 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
+    leaf5 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
+    
+    
     screen.setup(width=1.0,height=1.0)
     screen.bgcolor('black')
-    screen.tracer(0, 0)
-    
-    move_Turtle_WithMemory(screen,turtle,leaf1,init_theta[1],theta[1],size[1],moves,pos_in[1],all_line_color[1])
-    move_Turtle_WithMemory(screen,turtle,leaf1,init_theta[1],theta[1],size[1],moves,pos_in[4],all_line_color[1])
-    move_Turtle_WithMemory(screen,turtle,leaf1,init_theta[1],theta[1],size[1],moves,pos_in[5],all_line_color[1])
-    move_Turtle_WithMemory(screen,turtle,log,init_theta[0],theta[0],size[0],moves,pos_in[0],all_line_color[0])
-    move_Turtle_WithMemory(screen,turtle,log,init_theta[0],theta[0],size[3],moves,pos_in[6],all_line_color[0])
-    move_Turtle_WithMemory(screen,turtle,log,init_theta[0],theta[0],size[3],moves,pos_in[7],all_line_color[0])
-    move_Turtle_WithMemory(screen,turtle,tree,init_theta[2],theta[2],size[2],moves,pos_in[2],all_line_color[2])
-    move_Turtle_WithMemory(screen,turtle,tree,init_theta[2],theta[2],size[2],moves,pos_in[3],all_line_color[2])
+    turtle._tracer(0, 0)
 
-    screen.update()
+    move_Turtle_WithMemory(screen,turtle,leaf1,90,45,7,moves,(0,-300),"yellow")
+    move_Turtle_WithMemory(screen,turtle,leaf2,90,45,7,moves,(250,-300),"yellow")
+    move_Turtle_WithMemory(screen,turtle,leaf3,90,45,7,moves,(500,-300),"yellow")
+    move_Turtle_WithMemory(screen,turtle,leaf4,90,45,7,moves,(-250,-300),"yellow")
+    move_Turtle_WithMemory(screen,turtle,leaf5,90,45,7,moves,(-500,-300),"yellow")
+
+    turtle._update()
     screen.mainloop()
 
 gen_forest()
