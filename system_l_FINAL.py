@@ -151,35 +151,72 @@ def move_Turtle_WithMemory(screen,turtle,cad, init_theta,theta, size, moves, pos
             actual_heading.pop(-1)
 
 def gen_forest():
-    axioms_list=['F','XGG','F','G','F']
-    prod_list=[{'F':['[FD]H'],'H':['K[+FFFH[]]F'],'K':['[]FFK-H']
-                ,'D':['D-F+']},
+    axioms_list=['F','XGG']
+    prod_list=[{'F':['FFG+[+F-F-FG]-[-F+F+F]',
+                     'FF+[-F+F-F+]-[-F+F+F]',
+                     'FF+[+F-F-F]-[-F+F+F]'], 'G':['GG']},
+               
                {'F':['FF'],'G':['G[-F[G]-G][G+G][+FF[G]-G]',
                                 'G[+F[G]+G][G-G][-FF[G]-G]',
                                 'G[-F[G]+G][G-G][+FF[G]-G]',
                                 'F[-G[F]+F][F-F][+GG[F]-F]',
-                                'F[-G[F]-F][F+F][+GG[F]-F]']}]
+                                'F[-G[F]-F][F+F][+GG[F]-F]']},
+
+                {'F':['F[+FFG][-FFG]F[-FG][+F]FG',
+                      'F[+FF][-FF]F[F-F][+F]F',
+                      'F[+F][-F]F[-F][+F]F',
+                      'F[+FF][-FF]F[-F][+F]F'], 'G':['GGG']}]
+    
     
     turtle=lia.Turtle()
     screen=lia.Screen()
     moves={'F':turtle.forward,'G':turtle.forward,'+':turtle.right,'-':turtle.left}
+
+    tree1 = gen_cads(axioms_list[0],prod_list[0], 5)
+    tree2 = gen_cads(axioms_list[0],prod_list[0], 5)
+    tree3 = gen_cads(axioms_list[0],prod_list[0], 5)
+    tree4 = gen_cads(axioms_list[0],prod_list[0], 5)
     
     leaf1 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
     leaf2 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
     leaf3 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
     leaf4 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
     leaf5 = ["F"]*30+gen_cads(axioms_list[1],prod_list[1], 5)
-    
-    
+
+    wifi1 = gen_cads(axioms_list[0],prod_list[2], 5)
+    wifi2 = gen_cads(axioms_list[0],prod_list[2], 5)
+    wifi3 = gen_cads(axioms_list[0],prod_list[2], 5)
+    wifi4 = gen_cads(axioms_list[0],prod_list[2], 5)
+    wifi5 = gen_cads(axioms_list[0],prod_list[2], 5)
+    wifi6 = gen_cads(axioms_list[0],prod_list[2], 5)
+
     screen.setup(width=1.0,height=1.0)
     screen.bgcolor('black')
     turtle._tracer(0, 0)
 
-    move_Turtle_WithMemory(screen,turtle,leaf1,90,45,7,moves,(0,-300),"yellow")
-    move_Turtle_WithMemory(screen,turtle,leaf2,90,45,7,moves,(250,-300),"yellow")
-    move_Turtle_WithMemory(screen,turtle,leaf3,90,45,7,moves,(500,-300),"yellow")
-    move_Turtle_WithMemory(screen,turtle,leaf4,90,45,7,moves,(-250,-300),"yellow")
-    move_Turtle_WithMemory(screen,turtle,leaf5,90,45,7,moves,(-500,-300),"yellow")
+    all_line_color = ["#f4511e","#f39c12","#d4e157"]
+    pos_in = [(0,-300), (250,-300), (500,-300), (-250,-300), (-500,-300),
+              (125, -300), (375, -300), (625, -300), (-125, -300), (-375, -300), (-625, -300),
+              (-550, -300), (-165, -300), (165, -300), (550, -300)]
+    theta = [45, 35, 22.5]
+    theta_init = 90
+    size = [7, 1]
+
+    move_Turtle_WithMemory(screen, turtle, leaf1, theta_init, theta[0], size[0], moves, pos_in[0], all_line_color[1])
+    move_Turtle_WithMemory(screen, turtle, leaf2, theta_init, theta[0], size[0], moves, pos_in[1], all_line_color[1])
+    move_Turtle_WithMemory(screen, turtle, leaf3, theta_init, theta[0], size[0], moves, pos_in[2], all_line_color[1])
+    move_Turtle_WithMemory(screen, turtle, leaf4, theta_init, theta[0], size[0], moves, pos_in[3], all_line_color[1])
+    move_Turtle_WithMemory(screen, turtle, leaf5, theta_init, theta[0], size[0], moves, pos_in[4], all_line_color[1])
+    move_Turtle_WithMemory(screen, turtle, wifi1, theta_init, theta[1], size[1], moves, pos_in[5], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, wifi2, theta_init, theta[1], size[1], moves, pos_in[6], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, wifi3, theta_init, theta[1], size[1], moves, pos_in[7], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, wifi4, theta_init, theta[1], size[1], moves, pos_in[8], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, wifi5, theta_init, theta[1], size[1], moves, pos_in[9], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, wifi6, theta_init, theta[1], size[1], moves, pos_in[10], all_line_color[0])
+    move_Turtle_WithMemory(screen, turtle, tree1, theta_init, theta[2], size[0], moves, pos_in[11], all_line_color[2])
+    move_Turtle_WithMemory(screen, turtle, tree2, theta_init, theta[2], size[0], moves, pos_in[12], all_line_color[2])
+    move_Turtle_WithMemory(screen, turtle, tree3, theta_init, theta[2], size[0], moves, pos_in[13], all_line_color[2])
+    move_Turtle_WithMemory(screen, turtle, tree4, theta_init, theta[2], size[0], moves, pos_in[14], all_line_color[2])
 
     turtle._update()
     screen.mainloop()
