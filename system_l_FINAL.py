@@ -220,5 +220,3 @@ def gen_forest():
 
     turtle._update()
     screen.mainloop()
-
-gen_forest()
